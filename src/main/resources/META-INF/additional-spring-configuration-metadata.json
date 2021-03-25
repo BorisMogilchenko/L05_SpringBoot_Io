@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "outFileName",
+      "type": "java.lang.String",
+      "description": "homework_02_output.txt."
+    },
+    {
+      "name": "inFileName",
+      "type": "java.lang.String",
+      "description": "homework_02_input.txt."
+    },
+    {
+      "name": "findString",
+      "type": "java.lang.String",
+      "description": "Hello, guys!."
+    }
+  ] }
