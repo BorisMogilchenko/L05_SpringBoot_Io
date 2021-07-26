@@ -5,13 +5,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
+import ru.quazar.l05springboot.config.ConfigProperties;
 import ru.quazar.l05springboot.model.IoStream;
 import ru.quazar.l05springboot.repository.IoStreamRepository;
 import ru.quazar.l05springboot.service.IoStreamService;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,20 +23,34 @@ import java.util.stream.Collectors;
 
 @Component
 @ComponentScan("ru.quazar.l05springboot")
-@EnableJpaRepositories("ru.quazar.l05springboot.repository")
+@EnableConfigurationProperties(ConfigProperties.class)
+@ConfigurationPropertiesScan("ru.quazar.l05springboot.config")
 @EntityScan("ru.quazar.l05springboot.model")
 public class StreamRunner implements CommandLineRunner {
 
-//    @Value("${spring.datasource.inFileName}")
-//    @Value("${spring.datasource.inFileName}") private String inFileName;
-    private String inFileName = "homework_02_input.txt";
+//    @Value("${inFileName}")
+//    private String inFileName;
 
     private static final Logger logger = LoggerFactory.getLogger(IoStreamApplication.class);
 //    private AtomicLong entityId = new AtomicLong(0L);
-    private Long entityId = 0L;
+//    private Long entityId = 0L;
 
     @Autowired
     private IoStreamRepository repository;
+
+    @Autowired
+    private ConfigProperties configProperties;
+
+    private String inFileName;
+
+    @PostConstruct
+    public void init() {
+        inFileName = configProperties.getInFileName();
+    }
+
+//    public StreamRunner(ConfigProperties configProperties) {
+//        this.configProperties = configProperties;
+//    }
 
     @Override
     public void run(String... args) throws IOException {
@@ -42,6 +59,20 @@ public class StreamRunner implements CommandLineRunner {
 
         List<String> params = Arrays.stream(args)
         .collect(Collectors.toList());
+
+        if (params.size() > 0) {
+            System.out.println( "" );
+            System.out.println( "Первый параметр: " + params.get( 0 ) );
+            System.out.println( "" );
+            System.out.println( "Второй параметр: " + params.get( 1 ) );
+            System.out.println( "" );
+        } else {
+            System.out.println("");
+            System.out.println("No arguments!!!");
+            System.out.println("Enter, please!!!");
+            System.out.println("");
+        }
+
         if (wouldVerifyArguments(params)) {
             switch (params.size()) {
                 case 1:
@@ -66,9 +97,8 @@ public class StreamRunner implements CommandLineRunner {
             System.out.println("Число записей в БД: " + repository.count());
             System.out.println("");
         } else {
-        logger.warn("Invalid arguments " + params.toString());
+            logger.warn("Invalid arguments " + params.toString());
         }
-
     }
 
     private static boolean wouldVerifyArguments(List<String> args) {
@@ -77,10 +107,9 @@ public class StreamRunner implements CommandLineRunner {
         if (args.size() > 0) {
         success = true;
         } else {
-        throw new RuntimeException("No arguments!!!");
+            throw new RuntimeException("No arguments!!!");
         }
 
         return success;
     }
-
 }

@@ -2,6 +2,12 @@ package ru.quazar.l05springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.quazar.l05springboot.config.ConfigProperties;
 
 /**
  * Put file "homework_02_input.txt" in any path of file system, then put into
@@ -15,18 +21,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
-//@EntityScan("ru.quazar.l05springboot.model")
-//@EnableJpaRepositories("ru.quazar.l05springboot.repository")
-
-/*
+@EnableConfigurationProperties(ConfigProperties.class)
+@ConfigurationPropertiesScan("ru.quazar.l05springboot.config")
 @EnableJpaRepositories(basePackages = "")
 @EnableTransactionManagement
 @EntityScan(basePackages="")
-*/
 public class IoStreamApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(IoStreamApplication.class, args);
     }
-
 }

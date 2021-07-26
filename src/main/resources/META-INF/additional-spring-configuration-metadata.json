@@ -14,5 +14,10 @@
       "name": "findString",
       "type": "java.lang.String",
       "description": "Hello, guys!."
+    },
+    {
+      "name": "spring.cycle.findString",
+      "type": "java.lang.String",
+      "description": "Description for spring.cycle.findString."
     }
   ] }

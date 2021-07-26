@@ -1,9 +1,16 @@
 {
+  "groups": [
+    {
+      "name": "string",
+      "type": "ru.quazar.l05springboot.config.AppConfig",
+      "sourceType": "ru.quazar.l05springboot.config.AppConfig"
+    }
+  ],
   "properties": [
     {
-      "name": "outFileName",
+      "name": "findString",
       "type": "java.lang.String",
-      "description": "homework_02_output.txt."
+      "description": "Hello, guys!."
     },
     {
       "name": "inFileName",
@@ -11,13 +18,15 @@
       "description": "homework_02_input.txt."
     },
     {
-      "name": "findString",
+      "name": "outFileName",
       "type": "java.lang.String",
-      "description": "Hello, guys!."
+      "description": "homework_02_output.txt."
     },
     {
       "name": "spring.cycle.findString",
       "type": "java.lang.String",
       "description": "Description for spring.cycle.findString."
     }
-  ] }
+  ],
+  "hints": []
+}

@@ -77,7 +77,6 @@ public class DataSourceConfig {
 
     public void setInitialize(boolean initialize) {
         this.initialize = initialize;
-
     }
 
 }

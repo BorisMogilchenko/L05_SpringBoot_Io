@@ -2,8 +2,16 @@ package ru.quazar.l05springboot.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import ru.quazar.l05springboot.config.AppConfig;
+import ru.quazar.l05springboot.config.ConfigProperties;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,11 +19,45 @@ import java.io.IOException;
 import java.net.URL;
 
 @Data
+@Component
+@ComponentScan("ru.quazar.l05springboot")
+@EnableConfigurationProperties(AppConfig.class)
+@ConfigurationPropertiesScan("ru.quazar.l05springboot.config")
 @Service
 public class IoStreamService {
-//    @Value("${spring.datasource.findString}")
-//    @Value("${spring.datasource.findString}") private String findString;
-    private String findString = "Hello, guys!";
+
+    @Autowired
+    private ConfigProperties configProperties;
+
+    private String inputName;
+    private String outputName;
+    private String findString;
+
+    @PostConstruct
+    public void init() {
+        findString = configProperties.getFindString();
+        inputName = configProperties.getInFileName();
+        outputName = configProperties.getOutFileName();
+    }
+
+//    if (findString > 0 && ) {
+//        System.out.println( "" );
+//        System.out.println( "Первый параметр: " + params.get( 0 ) );
+//        System.out.println( "" );
+//        System.out.println( "Второй параметр: " + params.get( 1 ) );
+//        System.out.println( "" );
+//    } else {
+//        System.out.println("");
+//        System.out.println("No arguments!!!");
+//        System.out.println("Enter, please!!!");
+//        System.out.println("");
+//    }
+//
+//    System.out.println("");
+//    System.out.println("Input Name: " + inputName);
+//    System.out.println("Output Name: " + outputName);
+//    System.out.println("Finding String: " + findString);
+//    System.out.println("");
 
     /**
      * Get file from source.
@@ -82,6 +124,8 @@ public class IoStreamService {
         String cFindString = "";
         int iBeginFindString;
         int iLenSubString = 20;
+
+//        findString = fileNamesProperties.getFindString();
 
         System.out.println();
         System.out.println("Искомая строка: " + findString);
@@ -169,5 +213,4 @@ public class IoStreamService {
             e.printStackTrace();
         }
     }
-
 }

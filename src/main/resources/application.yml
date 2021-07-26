@@ -1,0 +1,30 @@
+################ CONFIGURACION HIBERNATE ################
+
+#hibernate:
+#  connection:
+#    driver_class: org.h2.Driver
+#    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1
+#    username: sa
+#    password: sa
+
+################ CONFIGURACION SPRING ################
+
+spring:
+  datasource:
+    url: "jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1"
+    driverClassName: "org.h2.Driver"
+    username: "sa"
+    password: "sa"
+  h2:
+    console:
+      enabled: true
+      path: "/h2-console"
+  jpa:
+    database-platform: "org.hibernate.dialect.H2Dialect"
+  main:
+    lazy-initialization: true
+
+string:
+  inFileName: "homework_02_input.txt"
+  outFileName: "homework_02_output.txt"
+  findString: "Hello, guys!"

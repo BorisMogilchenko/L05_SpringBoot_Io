@@ -23,7 +23,7 @@ public class IoStream {
     private Long id;
 
 //    @OneToOne()
-    @Column(name = "target")
+//    @Column(name = "target")
     private String targetString;
 
     public IoStream() {

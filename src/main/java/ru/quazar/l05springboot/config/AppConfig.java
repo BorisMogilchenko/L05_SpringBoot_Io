@@ -3,14 +3,16 @@ package ru.quazar.l05springboot.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 @Configuration
-@ComponentScan(basePackages = "ru.quazar")
-//@PropertySource(value = "application.properties")
-public class RepositoryConfiguration {
+@Component
+@ComponentScan({"ru.quazar.l05springboot"})
+public class AppConfig {
 
     @Bean
-    public H2Configurer databaseConfig() {
-        return new H2Configurer();
+    public ConfigProperties configPropertiesInit() {
+        return new ConfigProperties();
     }
+
 }
