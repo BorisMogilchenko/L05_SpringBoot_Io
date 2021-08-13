@@ -3,15 +3,13 @@ package ru.quazar.l05springboot.service;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.quazar.l05springboot.config.AppConfig;
-import ru.quazar.l05springboot.config.ConfigProperties;
 
-import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,42 +20,11 @@ import java.net.URL;
 @Component
 @ComponentScan("ru.quazar.l05springboot")
 @EnableConfigurationProperties(AppConfig.class)
-@ConfigurationPropertiesScan("ru.quazar.l05springboot.config")
 @Service
 public class IoStreamService {
 
     @Autowired
-    private ConfigProperties configProperties;
-
-    private String inputName;
-    private String outputName;
-    private String findString;
-
-    @PostConstruct
-    public void init() {
-        findString = configProperties.getFindString();
-        inputName = configProperties.getInFileName();
-        outputName = configProperties.getOutFileName();
-    }
-
-//    if (findString > 0 && ) {
-//        System.out.println( "" );
-//        System.out.println( "Первый параметр: " + params.get( 0 ) );
-//        System.out.println( "" );
-//        System.out.println( "Второй параметр: " + params.get( 1 ) );
-//        System.out.println( "" );
-//    } else {
-//        System.out.println("");
-//        System.out.println("No arguments!!!");
-//        System.out.println("Enter, please!!!");
-//        System.out.println("");
-//    }
-//
-//    System.out.println("");
-//    System.out.println("Input Name: " + inputName);
-//    System.out.println("Output Name: " + outputName);
-//    System.out.println("Finding String: " + findString);
-//    System.out.println("");
+    private AppConfig appConfig;
 
     /**
      * Get file from source.
@@ -73,6 +40,15 @@ public class IoStreamService {
     public String loadFileToStream(File inputFile) throws IOException {
 
         String myStringToFile = "";
+
+        System.out.println("");
+        System.out.println("Параметры 1 файлов: " + appConfig);
+        System.out.println("");
+
+        System.out.println( "" );
+        System.out.println( "Искомая подстрока 1 сервиса!!!: " + (appConfig.getFindString().length() > 0 ? appConfig.getFindString() : "Пусто!!!") );
+        System.out.println( "" );
+
         try (FileInputStream inFile = new FileInputStream(inputFile)
 
         ) {
@@ -122,19 +98,19 @@ public class IoStreamService {
         String cOutSubString1 = "";
         String cOutSubString2 = "";
         String cFindString = "";
+        @NotBlank
+//        String findSubString = subString;
         int iBeginFindString;
         int iLenSubString = 20;
 
-//        findString = fileNamesProperties.getFindString();
+        System.out.println( "" );
+        System.out.println( "Искомая подстрока 2 сервиса!!!: " + (appConfig.getFindString().length() > 0 ? appConfig.getFindString() : "Пусто!!!") );
+        System.out.println( "" );
 
-        System.out.println();
-        System.out.println("Искомая строка: " + findString);
-        System.out.println();
-
-        if (cSourceString.contains(findString)) {
-            if ((iBeginFindString = cSourceString.indexOf(findString)) != -1) {
+        if (cSourceString.contains(appConfig.getFindString())) {
+            if ((iBeginFindString = cSourceString.indexOf(appConfig.getFindString())) != -1) {
                 cOutSubString1 = cSourceString.substring(iBeginFindString - iLenSubString, iBeginFindString);
-                cOutSubString2 = cSourceString.substring(iBeginFindString + findString.length(), iBeginFindString + (findString.length()) + (iLenSubString));
+                cOutSubString2 = cSourceString.substring(iBeginFindString + appConfig.getFindString().length(), iBeginFindString + (appConfig.getFindString().length()) + (iLenSubString));
             }
         }
 

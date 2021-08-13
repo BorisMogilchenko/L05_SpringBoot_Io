@@ -24,7 +24,6 @@ spring:
   main:
     lazy-initialization: true
 
-string:
-  inFileName: "homework_02_input.txt"
-  outFileName: "homework_02_output.txt"
-  findString: "Hello, guys!"
+infilename: "homework_02_input.txt"
+outfilename: "homework_02_output.txt"
+findString: "Hello, guys!"

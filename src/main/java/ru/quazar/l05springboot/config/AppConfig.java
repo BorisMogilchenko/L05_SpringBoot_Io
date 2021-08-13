@@ -1,18 +1,45 @@
 package ru.quazar.l05springboot.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Configuration
 @Component
-@ComponentScan({"ru.quazar.l05springboot"})
+//@ComponentScan({"ru.quazar.l05springboot"})
+@ConfigurationProperties()
+//@PropertySource(value = "classpath:application.yml")
 public class AppConfig {
 
-    @Bean
-    public ConfigProperties configPropertiesInit() {
-        return new ConfigProperties();
+//    @NotBlank
+    @Value( "${findString}" )
+    private String findString;
+
+//    @NotBlank
+    @Value( "${infilename}" )
+    private String inFileName;
+
+//    @NotBlank
+    @Value( "${outfilename}" )
+    private String outFileName;
+
+    public String getFindString( ) {
+        return findString;
     }
 
+    public String getInFileName( ) {
+        return inFileName;
+    }
+
+    public String getOutFileName( ) {
+        return outFileName;
+    }
+
+    @Override
+    public String toString() {
+        return "AppConfig{" +
+                "findString='" + findString + '\'' +
+                ", inFileName='" + inFileName + '\'' +
+                ", outFileName='" + outFileName + '\'' +
+                '}';
+    }
 }

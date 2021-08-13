@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackages = "ru.quazar")
-//@PropertySource(value = "application.properties")
 public class RepositoryConfiguration {
 
     @Bean

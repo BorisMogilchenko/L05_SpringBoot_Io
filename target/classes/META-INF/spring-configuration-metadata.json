@@ -1,7 +1,7 @@
 {
   "groups": [
     {
-      "name": "string",
+      "name": "",
       "type": "ru.quazar.l05springboot.config.AppConfig",
       "sourceType": "ru.quazar.l05springboot.config.AppConfig"
     }

@@ -3,18 +3,18 @@ package ru.quazar.l05springboot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
-import ru.quazar.l05springboot.config.ConfigProperties;
+import ru.quazar.l05springboot.config.AppConfig;
 import ru.quazar.l05springboot.model.IoStream;
 import ru.quazar.l05springboot.repository.IoStreamRepository;
 import ru.quazar.l05springboot.service.IoStreamService;
 
-import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,13 +23,9 @@ import java.util.stream.Collectors;
 
 @Component
 @ComponentScan("ru.quazar.l05springboot")
-@EnableConfigurationProperties(ConfigProperties.class)
-@ConfigurationPropertiesScan("ru.quazar.l05springboot.config")
+@EnableConfigurationProperties(AppConfig.class)
 @EntityScan("ru.quazar.l05springboot.model")
 public class StreamRunner implements CommandLineRunner {
-
-//    @Value("${inFileName}")
-//    private String inFileName;
 
     private static final Logger logger = LoggerFactory.getLogger(IoStreamApplication.class);
 //    private AtomicLong entityId = new AtomicLong(0L);
@@ -39,18 +35,19 @@ public class StreamRunner implements CommandLineRunner {
     private IoStreamRepository repository;
 
     @Autowired
-    private ConfigProperties configProperties;
+    private AppConfig appConfig;
 
+    @NotBlank
+    @Value( "${findString}" )
+    private String findSubString;
+
+    @NotBlank
+    @Value( "${infilename}" )
     private String inFileName;
 
-    @PostConstruct
-    public void init() {
-        inFileName = configProperties.getInFileName();
-    }
-
-//    public StreamRunner(ConfigProperties configProperties) {
-//        this.configProperties = configProperties;
-//    }
+    @NotBlank
+    @Value( "${outfilename}" )
+    private String outFileName;
 
     @Override
     public void run(String... args) throws IOException {
@@ -60,11 +57,21 @@ public class StreamRunner implements CommandLineRunner {
         List<String> params = Arrays.stream(args)
         .collect(Collectors.toList());
 
+        System.out.println("");
+        System.out.println("Параметры файлов: " + appConfig);
+        System.out.println("");
+
         if (params.size() > 0) {
             System.out.println( "" );
             System.out.println( "Первый параметр: " + params.get( 0 ) );
             System.out.println( "" );
             System.out.println( "Второй параметр: " + params.get( 1 ) );
+            System.out.println( "" );
+            System.out.println( "Имя входящее файла: " + (inFileName.length() > 0 ? inFileName : "Пусто!!!") );
+            System.out.println( "" );
+            System.out.println( "Имя исходящее файла: " + (outFileName.length() > 0 ? outFileName : "Пусто!!!") );
+            System.out.println( "" );
+            System.out.println( "Искомая подстрока: " + (findSubString.length() > 0 ? findSubString : "Пусто!!!") );
             System.out.println( "" );
         } else {
             System.out.println("");
