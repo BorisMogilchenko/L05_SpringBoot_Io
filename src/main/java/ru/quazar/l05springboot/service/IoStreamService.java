@@ -3,13 +3,14 @@ package ru.quazar.l05springboot.service;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.quazar.l05springboot.config.AppConfig;
+import ru.quazar.l05springboot.config.EnvironmentProperties;
 
-import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,6 +27,16 @@ public class IoStreamService {
     @Autowired
     private AppConfig appConfig;
 
+    @Autowired
+    private EnvironmentProperties environmentProperties;
+
+    @Value( "${findString}" )
+    private String findSubString;
+
+    public IoStreamService(EnvironmentProperties environmentProperties) {
+        findSubString = environmentProperties.getFindString();
+    }
+
     /**
      * Get file from source.
      *
@@ -41,12 +52,20 @@ public class IoStreamService {
 
         String myStringToFile = "";
 
-        System.out.println("");
-        System.out.println("Параметры 1 файлов: " + appConfig);
-        System.out.println("");
+//        System.out.println("");
+//        System.out.println("Параметры 3 бина: " + environmentProperties.getFindString().length());
+//        System.out.println("");
+//        System.out.println("Параметры 3 бина: " + (environmentProperties.getFindString().length() > 0 ? environmentProperties.getFindString() : "Пусто!!!"));
+//        System.out.println("");
 
-        System.out.println( "" );
-        System.out.println( "Искомая подстрока 1 сервиса!!!: " + (appConfig.getFindString().length() > 0 ? appConfig.getFindString() : "Пусто!!!") );
+        System.out.println("");
+        System.out.println("Параметры 3 файла: " + findSubString.length());
+//        System.out.println("");
+//        System.out.println("Параметры 3 мапа: " + (appConfig.initEnvProperties().get("findString").length() > 0 ? appConfig.initEnvProperties().get("findString") : "Пусто!!!"));
+//        System.out.println("");
+//
+//        System.out.println( "" );
+        System.out.println( "Искомая подстрока 3 сервиса!!!: " + (findSubString.length() > 0 ? findSubString : "Пусто!!!") );
         System.out.println( "" );
 
         try (FileInputStream inFile = new FileInputStream(inputFile)
@@ -98,19 +117,17 @@ public class IoStreamService {
         String cOutSubString1 = "";
         String cOutSubString2 = "";
         String cFindString = "";
-        @NotBlank
-//        String findSubString = subString;
         int iBeginFindString;
         int iLenSubString = 20;
 
-        System.out.println( "" );
-        System.out.println( "Искомая подстрока 2 сервиса!!!: " + (appConfig.getFindString().length() > 0 ? appConfig.getFindString() : "Пусто!!!") );
-        System.out.println( "" );
+//        System.out.println( "" );
+//        System.out.println( "Искомая подстрока 3 сервиса!!!: " + (findSubString.length() > 0 ? findSubString : "Пусто!!!") );
+//        System.out.println( "" );
 
-        if (cSourceString.contains(appConfig.getFindString())) {
-            if ((iBeginFindString = cSourceString.indexOf(appConfig.getFindString())) != -1) {
+        if (cSourceString.contains(findSubString)) {
+            if ((iBeginFindString = cSourceString.indexOf(findSubString)) != -1) {
                 cOutSubString1 = cSourceString.substring(iBeginFindString - iLenSubString, iBeginFindString);
-                cOutSubString2 = cSourceString.substring(iBeginFindString + appConfig.getFindString().length(), iBeginFindString + (appConfig.getFindString().length()) + (iLenSubString));
+                cOutSubString2 = cSourceString.substring(iBeginFindString + findSubString.length(), iBeginFindString + (findSubString.length()) + (iLenSubString));
             }
         }
 

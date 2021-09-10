@@ -3,18 +3,17 @@ package ru.quazar.l05springboot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import ru.quazar.l05springboot.config.AppConfig;
+import ru.quazar.l05springboot.config.EnvironmentProperties;
 import ru.quazar.l05springboot.model.IoStream;
 import ru.quazar.l05springboot.repository.IoStreamRepository;
 import ru.quazar.l05springboot.service.IoStreamService;
 
-import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,23 +30,26 @@ public class StreamRunner implements CommandLineRunner {
 //    private AtomicLong entityId = new AtomicLong(0L);
 //    private Long entityId = 0L;
 
+    private String findSubString;
+
+    private String inputFileName;
+
+    private String outputFileName;
+
+    @Autowired
+    private EnvironmentProperties environmentProperties;
+
     @Autowired
     private IoStreamRepository repository;
 
     @Autowired
     private AppConfig appConfig;
 
-    @NotBlank
-    @Value( "${findString}" )
-    private String findSubString;
-
-    @NotBlank
-    @Value( "${infilename}" )
-    private String inFileName;
-
-    @NotBlank
-    @Value( "${outfilename}" )
-    private String outFileName;
+    public StreamRunner(EnvironmentProperties environmentProperties) {
+        findSubString = environmentProperties.getFindString();
+        inputFileName = environmentProperties.getInFileName();
+        outputFileName = environmentProperties.getOutFileName();
+    }
 
     @Override
     public void run(String... args) throws IOException {
@@ -58,27 +60,44 @@ public class StreamRunner implements CommandLineRunner {
         .collect(Collectors.toList());
 
         System.out.println("");
-        System.out.println("Параметры файлов: " + appConfig);
+        System.out.println("Параметры 1 конфига: " + appConfig.initEnvProperties());
         System.out.println("");
+        System.out.println("Параметры 1 окружения: " + findSubString);
+        System.out.println("");
+        System.out.println("Параметры 2 окружения: " + inputFileName);
+        System.out.println("");
+        System.out.println("Параметры 3 окружения: " + outputFileName);
 
-        if (params.size() > 0) {
-            System.out.println( "" );
-            System.out.println( "Первый параметр: " + params.get( 0 ) );
-            System.out.println( "" );
-            System.out.println( "Второй параметр: " + params.get( 1 ) );
-            System.out.println( "" );
-            System.out.println( "Имя входящее файла: " + (inFileName.length() > 0 ? inFileName : "Пусто!!!") );
-            System.out.println( "" );
-            System.out.println( "Имя исходящее файла: " + (outFileName.length() > 0 ? outFileName : "Пусто!!!") );
-            System.out.println( "" );
-            System.out.println( "Искомая подстрока: " + (findSubString.length() > 0 ? findSubString : "Пусто!!!") );
-            System.out.println( "" );
-        } else {
-            System.out.println("");
-            System.out.println("No arguments!!!");
-            System.out.println("Enter, please!!!");
-            System.out.println("");
-        }
+//        if (params.size() > 0) {
+//            System.out.println( "" );
+//            System.out.println( "Первый параметр: " + params.get( 0 ) );
+//            System.out.println( "" );
+//            System.out.println( "Второй параметр: " + params.get( 1 ) );
+//            System.out.println( "" );
+//            System.out.println( "Размеры 1 файлов: " + appConfig.toString().length() );
+//            System.out.println( "" );
+//            System.out.println( "Искомая подстрока: " + (findSubString.length() > 0 ? findSubString : "Пусто!!!") );
+//            System.out.println( "" );
+//            System.out.println( "Имя входящее файла: " + (inputFileName.length() > 0 ? inputFileName : "Пусто!!!") );
+//            System.out.println( "" );
+//            System.out.println( "Имя исходящее файла: " + (outputFileName.length() > 0 ? outputFileName : "Пусто!!!") );
+//            System.out.println( "" );
+//            System.out.println( "Размеры 2 мапы: " + appConfig.initEnvProperties().size() );
+//            System.out.println( "" );
+//            System.out.println( "Параметры 2 файлов: " + appConfig.initEnvProperties().toString() );
+//            System.out.println( "" );
+//            System.out.println( "Искомая подстрока 2: " + (appConfig.initEnvProperties().get("findString").length() > 0 ? appConfig.initEnvProperties().get("findString") : "Пусто!!!") );
+//            System.out.println( "" );
+//            System.out.println( "Имя входящее файла: " + (appConfig.initEnvProperties().get("inputfilename").length() > 0 ? appConfig.initEnvProperties().get("inputfilename") : "Пусто!!!") );
+//            System.out.println( "" );
+//            System.out.println( "Имя исходящее файла: " + (appConfig.initEnvProperties().get("outputfilename").length() > 0 ? appConfig.initEnvProperties().get("outputfilename") : "Пусто!!!") );
+//            System.out.println( "" );
+//        } else {
+//            System.out.println("");
+//            System.out.println("No arguments!!!");
+//            System.out.println("Enter, please!!!");
+//            System.out.println("");
+//        }
 
         if (wouldVerifyArguments(params)) {
             switch (params.size()) {
@@ -92,10 +111,9 @@ public class StreamRunner implements CommandLineRunner {
                     throw new NumberFormatException("Incorrect arguments!!!");
             }
 
-            IoStreamService ioStreamService = new IoStreamService();
+            IoStreamService ioStreamService = new IoStreamService(environmentProperties);
 
-            File inputFile = ioStreamService.getFileWithConditions(args[0], loadFilePath, inFileName);
-//            FileToStreamService fileToStream = new FileToStreamService();
+            File inputFile = ioStreamService.getFileWithConditions(args[0], loadFilePath, inputFileName);
             targetString = ioStreamService.loadFileToStream(inputFile);
             IoStream ioStream = new IoStream();
             ioStream.setTargetString(targetString);

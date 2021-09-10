@@ -26,6 +26,12 @@ public class StringService {
         return repository.save(savedString);
     }
 
+    public IoStream changeSubString(Long id, IoStream entity) {
+        IoStream savedString = repository.findById(id).get();
+        savedString.setTargetString(entity.getTargetString());
+        return repository.save(savedString);
+    }
+
     public IoStream updateSubString(Long id, IoStream entity) {
         IoStream savedString = repository.findById(id).get();
         savedString.setTargetString(entity.getTargetString());

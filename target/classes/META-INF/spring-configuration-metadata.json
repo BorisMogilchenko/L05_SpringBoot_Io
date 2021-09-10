@@ -4,6 +4,11 @@
       "name": "",
       "type": "ru.quazar.l05springboot.config.AppConfig",
       "sourceType": "ru.quazar.l05springboot.config.AppConfig"
+    },
+    {
+      "name": "",
+      "type": "ru.quazar.l05springboot.config.EnvironmentProperties",
+      "sourceType": "ru.quazar.l05springboot.config.EnvironmentProperties"
     }
   ],
   "properties": [

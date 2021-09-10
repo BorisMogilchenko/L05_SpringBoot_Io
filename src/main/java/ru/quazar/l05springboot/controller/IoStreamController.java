@@ -18,7 +18,7 @@ import ru.quazar.l05springboot.service.StringService;
 @RestController
 public class IoStreamController {
 //    @Value("${outFileName}")
-    private String outFileName = "homework_02_output.txt";
+//    private String outputFileName = "homework_02_output.txt";
 
     @Autowired
     private IoStreamRepository repository;
@@ -26,9 +26,15 @@ public class IoStreamController {
     @Autowired
     private StringService stringService;
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String index() {
-        return "Welcome to Spring Boot!";
+        return "Welcome to Spring Boot IO Substring Service!";
+    }
+
+    @GetMapping("/")
+    public String getStrings() {
+
+        return "Искомые подстроки: " + stringService.getStrings().toString();
     }
 
     @GetMapping("/substring")
@@ -39,7 +45,13 @@ public class IoStreamController {
         return "Искомая подстрока: " + responseSubString;
     }
 
-    @PostMapping("/poststring")
+    @GetMapping("/{id}")
+    String getList(@PathVariable Long id) {
+
+        return stringService.getSubString(id);
+    }
+
+    @PostMapping("/")
     IoStream createSubString(@RequestBody String loadString) {
         IoStream ioStream = new IoStream();
         ioStream.setTargetString(loadString);
@@ -47,7 +59,7 @@ public class IoStreamController {
         return stringService.createSubString(ioStream);
     }
 
-    @PutMapping("putstring/{id}")
+    @PutMapping("/{id}")
     IoStream updateList(@RequestBody String loadString, @PathVariable Long id) {
         IoStream ioStream = new IoStream();
         ioStream.setTargetString(loadString);
@@ -55,21 +67,23 @@ public class IoStreamController {
         return stringService.updateSubString(id, ioStream);
     }
 
-    @GetMapping("/getstring/{id}")
-    String getList(@PathVariable Long id) {
+    @PatchMapping("/{id}")
+    IoStream patchList(@RequestBody String loadString, @PathVariable Long id) {
+        IoStream ioStream = new IoStream();
+        ioStream.setTargetString(loadString);
 
-        return stringService.getSubString(id);
+        return stringService.changeSubString(id, ioStream);
     }
 
-    @DeleteMapping("/deleteall")
+    @DeleteMapping("/")
     void deleteAllLists() {
-        StringService stringService = new StringService();
+//        StringService stringService = new StringService();
         stringService.deleteAllSubStrings();
     }
 
-    @DeleteMapping("/deletestring/{id}")
+    @DeleteMapping("/{id}")
     String deleteList(@PathVariable Long id) {
-        StringService stringService = new StringService();
+//        StringService stringService = new StringService();
         return stringService.deleteSubString(id);
     }
 }
