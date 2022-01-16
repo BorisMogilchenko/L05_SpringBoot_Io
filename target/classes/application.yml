@@ -27,3 +27,9 @@ spring:
 inputfilename: "homework_02_input.txt"
 outputfilename: "homework_02_output.txt"
 findString: "Hello, guys!"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
