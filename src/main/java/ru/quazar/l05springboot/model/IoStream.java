@@ -1,9 +1,11 @@
 package ru.quazar.l05springboot.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Model IoStream witch links controller with services, repositories.
@@ -12,14 +14,14 @@ import javax.persistence.*;
  * @author  <A HREF="mailto:boris.mogilchenko@yandex.ru">Boris Mogilchenko</A>
  */
 
-@Data
+//@Data
 @AllArgsConstructor
 @Entity
 public class IoStream {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+//    @Column(name = "id")
     private Long id;
 
 //    @OneToOne()

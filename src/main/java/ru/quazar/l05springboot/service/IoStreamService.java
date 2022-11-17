@@ -1,9 +1,8 @@
 package ru.quazar.l05springboot.service;
 
 import com.google.common.annotations.VisibleForTesting;
+import org.jetbrains.annotations.NotNull;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -24,17 +23,18 @@ import java.net.URL;
 @Service
 public class IoStreamService {
 
-    @Autowired
-    private AppConfig appConfig;
+    private final AppConfig appConfig;
 
-    @Autowired
-    private EnvironmentProperties environmentProperties;
+    private final EnvironmentProperties environmentProperties;
 
-    @Value( "${findString}" )
-    private String findSubString;
+//    @Value( "${findString}" )
+    private final String findSubString;
 
-    public IoStreamService(EnvironmentProperties environmentProperties) {
+    public IoStreamService(AppConfig appConfig, @NotNull EnvironmentProperties environmentProperties) {
+        this.appConfig = appConfig;
+        this.environmentProperties = environmentProperties;
         findSubString = environmentProperties.getFindString();
+//        findSubString = environmentProperties.getFindString();
     }
 
     /**

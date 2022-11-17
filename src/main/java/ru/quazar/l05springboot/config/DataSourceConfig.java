@@ -79,4 +79,17 @@ public class DataSourceConfig {
         this.initialize = initialize;
     }
 
+    @Override
+    public String toString() {
+        return "DataSourceConfig{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", driverClassName='" + driverClassName + '\'' +
+                ", initialize=" + initialize +
+                '}';
+    }
+
 }

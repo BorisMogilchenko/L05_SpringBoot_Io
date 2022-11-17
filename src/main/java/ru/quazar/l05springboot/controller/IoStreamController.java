@@ -1,6 +1,5 @@
 package ru.quazar.l05springboot.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.quazar.l05springboot.model.IoStream;
@@ -17,14 +16,15 @@ import ru.quazar.l05springboot.service.StringService;
 @Component
 @RestController
 public class IoStreamController {
-//    @Value("${outFileName}")
-//    private String outputFileName = "homework_02_output.txt";
 
-    @Autowired
-    private IoStreamRepository repository;
+    private final IoStreamRepository repository;
 
-    @Autowired
-    private StringService stringService;
+    private final StringService stringService;
+
+    public IoStreamController(IoStreamRepository repository, StringService stringService) {
+        this.stringService = stringService;
+        this.repository = repository;
+    }
 
     @GetMapping("/home")
     public String index() {
@@ -77,13 +77,20 @@ public class IoStreamController {
 
     @DeleteMapping("/")
     void deleteAllLists() {
-//        StringService stringService = new StringService();
         stringService.deleteAllSubStrings();
     }
 
     @DeleteMapping("/{id}")
     String deleteList(@PathVariable Long id) {
-//        StringService stringService = new StringService();
         return stringService.deleteSubString(id);
     }
+
+    @Override
+    public String toString() {
+        return "IoStreamController{" +
+                "repository=" + repository +
+                ", stringService=" + stringService +
+                '}';
+    }
+
 }

@@ -8,16 +8,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@ConfigurationProperties()
+@ConfigurationProperties(value = "name")
 public class AppConfig {
 
     @Value( "${findString}" )
     private String findString;
 
-    @Value( "${inputfilename}" )
+    @Value( "${input_file}" )
     private String inputFileName;
 
-    @Value( "${outputfilename}" )
+    @Value( "${output_file}" )
     private String outputFileName;
 
     private final Map<String, String> configMapping = new HashMap<>();
@@ -25,8 +25,8 @@ public class AppConfig {
     public Map<String, String> initEnvProperties() {
 
         configMapping.put("findString", findString );
-        configMapping.put("inputfilename", inputFileName);
-        configMapping.put("outputfilename", outputFileName);
+        configMapping.put("input_file", inputFileName);
+        configMapping.put("output_file", outputFileName);
 
         return configMapping;
     }

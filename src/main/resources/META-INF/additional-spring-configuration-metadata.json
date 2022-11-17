@@ -19,5 +19,10 @@
       "name": "spring.cycle.findString",
       "type": "java.lang.String",
       "description": "Description for spring.cycle.findString."
+    },
+    {
+      "name": "name.outputfile",
+      "type": "java.lang.String",
+      "description": "Description for name.outputfile."
     }
   ] }

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan("ru.quazar.l05springboot.config")
-@EnableJpaRepositories(basePackages = "")
+@EnableJpaRepositories(basePackages = "ru.quazar.l05springboot")
 @EnableTransactionManagement
 @EntityScan(basePackages="")
 public class IoStreamApplication {

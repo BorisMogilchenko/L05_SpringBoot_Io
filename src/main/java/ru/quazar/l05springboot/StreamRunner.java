@@ -2,7 +2,6 @@ package ru.quazar.l05springboot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,25 +29,25 @@ public class StreamRunner implements CommandLineRunner {
 //    private AtomicLong entityId = new AtomicLong(0L);
 //    private Long entityId = 0L;
 
-    private String findSubString;
+    private final String findSubString;
 
-    private String inputFileName;
+    private final String inputFileName;
 
-    private String outputFileName;
+    private final String outputFileName;
 
-    @Autowired
-    private EnvironmentProperties environmentProperties;
+    private final EnvironmentProperties environmentProperties;
 
-    @Autowired
-    private IoStreamRepository repository;
+    private final IoStreamRepository repository;
 
-    @Autowired
-    private AppConfig appConfig;
+    private final AppConfig appConfig;
 
-    public StreamRunner(EnvironmentProperties environmentProperties) {
-        findSubString = environmentProperties.getFindString();
-        inputFileName = environmentProperties.getInFileName();
-        outputFileName = environmentProperties.getOutFileName();
+    public StreamRunner(AppConfig appConfig, EnvironmentProperties environmentProperties, IoStreamRepository repository) {
+        this.findSubString = environmentProperties.getFindString();
+        this.inputFileName = environmentProperties.getInFileName();
+        this.outputFileName = environmentProperties.getOutFileName();
+        this.environmentProperties = environmentProperties;
+        this.appConfig = appConfig;
+        this.repository = repository;
     }
 
     @Override
@@ -111,7 +110,7 @@ public class StreamRunner implements CommandLineRunner {
                     throw new NumberFormatException("Incorrect arguments!!!");
             }
 
-            IoStreamService ioStreamService = new IoStreamService(environmentProperties);
+            IoStreamService ioStreamService = new IoStreamService(appConfig, environmentProperties);
 
             File inputFile = ioStreamService.getFileWithConditions(args[0], loadFilePath, inputFileName);
             targetString = ioStreamService.loadFileToStream(inputFile);
@@ -126,6 +125,18 @@ public class StreamRunner implements CommandLineRunner {
         }
     }
 
+    @Override
+    public String toString() {
+        return "StreamRunner{" +
+                "findSubString='" + findSubString + '\'' +
+                ", inputFileName='" + inputFileName + '\'' +
+                ", outputFileName='" + outputFileName + '\'' +
+                ", environmentProperties=" + environmentProperties +
+                ", repository=" + repository +
+                ", appConfig=" + appConfig +
+                '}';
+    }
+
     private static boolean wouldVerifyArguments(List<String> args) {
         boolean success = false;
 
@@ -137,4 +148,5 @@ public class StreamRunner implements CommandLineRunner {
 
         return success;
     }
+
 }
