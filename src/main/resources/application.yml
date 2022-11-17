@@ -29,3 +29,9 @@ name:
   output_file: "homework_02_output.txt"
 
 findString: "Hello, guys!"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
